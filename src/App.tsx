@@ -5,7 +5,7 @@ function App() {
 
   return (
     <main className="min-h-svh bg-slate-950 text-slate-100">
-      <section className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16">
+      <section className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden">
         <div className="space-y-3 text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-400">
             Fluorish
@@ -48,6 +48,24 @@ function App() {
         <footer className="text-center text-sm text-slate-500">
           Built with Vite, React, Tailwind CSS 4, and first-class PWA support.
         </footer>
+      </section>
+
+      <section className="hidden min-h-svh flex-col items-center justify-center gap-4 px-6 text-center lg:flex">
+        <div className="rounded-2xl border border-red-500/40 bg-red-500/10 px-8 py-10 shadow-2xl shadow-red-900/40">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-400">
+            Desktop blocked
+          </p>
+          <h2 className="mt-4 text-3xl font-semibold text-white">
+            Fluorish only runs as a PWA on mobile screens
+          </h2>
+          <p className="mt-3 text-base text-red-200">
+            Install the app as a Progressive Web App on your phone or shrink the
+            viewport to continue.
+          </p>
+        </div>
+        <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+          Switch to mobile view to proceed
+        </p>
       </section>
     </main>
   )
