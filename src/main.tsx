@@ -6,6 +6,7 @@ import App from './App.tsx'
 import { AppProvider } from './context/AppProvider.tsx'
 import './index.css'
 import DashboardView from './routes/DashboardView.tsx'
+import Onboarding from './routes/Onboarding.tsx'
 
 registerSW({
   immediate: true,
@@ -25,6 +26,14 @@ const router = createBrowserRouter([
     element: (
       <AppProvider>
         <DashboardView />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/onboarding',
+    element: (
+      <AppProvider>
+        <Onboarding />
       </AppProvider>
     ),
   },

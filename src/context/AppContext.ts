@@ -9,6 +9,13 @@ export type AppStatus =
   | 'error'
   | 'loggedOut'
 
+export type OnboardingInput = {
+  location: string
+  sunlightHoursPerDay: number
+  spaceHeightFt: number
+  spaceAreaSqFt: number
+}
+
 export type AppContextValue = {
   status: AppStatus
   user: MockUser | null
@@ -18,6 +25,7 @@ export type AppContextValue = {
   refreshUser: () => void
   login: (provider: string) => Promise<void>
   logout: () => void
+  completeOnboarding: (data: OnboardingInput) => void
 }
 
 export const AppContext = createContext<AppContextValue | undefined>(undefined)

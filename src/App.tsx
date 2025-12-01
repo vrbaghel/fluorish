@@ -18,6 +18,7 @@ const PROVIDER_COPY: Record<string, string> = {
 function App() {
   const {
     status,
+    user,
     error,
     logout,
     login,
@@ -25,8 +26,11 @@ function App() {
     isLoggedIn,
   } = useAppContext()
 
+  const hasProfile = !!user
+  const isFirstTimeLoggedIn = isLoggedIn && !hasProfile
+
   const shouldShowDashboard =
-    status === 'ready' ||
+    (status === 'ready' && hasProfile) ||
     status === 'loading' ||
     (status === 'error' && isLoggedIn)
 
@@ -36,6 +40,10 @@ function App() {
 
   if (status === 'authenticating') {
     return <AuthLoadingScreen provider={loginProvider} />
+  }
+
+  if (isFirstTimeLoggedIn) {
+    return <Navigate to="/onboarding" replace />
   }
 
   if (status === 'loggedOut' && !shouldShowDashboard) {
