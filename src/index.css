@@ -1,14 +1,51 @@
 @import 'tailwindcss';
 
+@theme {
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Segoe UI', sans-serif;
+
+  --color-background: #020617;
+  --color-surface: #020617;
+  --color-surface-elevated: #020617;
+
+  --color-primary: #22c55e;
+  --color-primary-soft: color-mix(in srgb, #22c55e 18%, white);
+  --color-primary-muted: #4ade80;
+
+  --color-foreground: #f9fafb;
+  --color-muted: #9ca3af;
+
+  --radius-sm: 0.625rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.25rem;
+}
+
 @layer base {
   :root {
-    color-scheme: light dark;
+    color-scheme: dark;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
   }
 
   body {
     margin: 0;
     min-height: 100vh;
     font-family: var(--font-sans);
-    background-color: color-mix(in srgb, #020617 90%, white);
+    background-color: var(--color-background);
+  }
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold leading-tight tracking-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.99];
+}
+
+@layer components {
+  .btn-primary {
+    @apply btn bg-primary text-background hover:bg-primary-muted focus-visible:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply btn border border-white/20 bg-surface-elevated text-foreground/90 hover:border-white/40 hover:bg-white/5 focus-visible:ring-primary-soft;
   }
 }

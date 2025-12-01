@@ -4,49 +4,50 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <main className="min-h-svh bg-slate-950 text-slate-100">
+    <main className="min-h-svh bg-background text-foreground">
       <section className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden">
         <div className="space-y-3 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
             Fluorish
           </p>
-          <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
-            React + Vite + Tailwind CSS 4 starter
+          <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+            Urban gardening for compact city spaces
           </h1>
           <p className="text-base text-slate-300 sm:text-lg">
-            Tailwind utilities are ready to go out of the box. Edit{' '}
-            <code className="rounded bg-slate-900 px-2 py-1 text-slate-100">
-              src/App.tsx
-            </code>{' '}
-            and save to start building.
+            Plan and track a thriving balcony or window garden, tuned to your
+            light, space, and local climate.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-sky-500/10 backdrop-blur">
-          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
-            Counter demo
+        <div className="rounded-2xl border border-white/8 bg-surface-elevated/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-muted">
+            Daily care streak
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-6xl font-semibold text-white">{count}</p>
+            <div className="space-y-1">
+              <p className="text-5xl font-semibold text-foreground">{count}</p>
+              <p className="text-xs text-muted">days watering on schedule</p>
+            </div>
             <div className="flex flex-wrap gap-3">
               <button
-                className="rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
+                className="btn-primary"
                 onClick={() => setCount((value) => value + 1)}
               >
-                Increment
+                Mark today as done
               </button>
               <button
-                className="rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white transition hover:border-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+                className="btn-secondary"
                 onClick={() => setCount(0)}
               >
-                Reset
+                Reset streak
               </button>
             </div>
           </div>
         </div>
 
-        <footer className="text-center text-sm text-slate-500">
-          Built with Vite, React, Tailwind CSS 4, and first-class PWA support.
+        <footer className="text-center text-xs text-muted">
+          Built for mobile PWA — perfect for balconies, windowsills, and tiny
+          terraces.
         </footer>
       </section>
 
