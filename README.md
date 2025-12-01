@@ -23,3 +23,11 @@ npm run dev
 - Registers the service worker via `virtual:pwa-register` so users get offline support by default.
 
 You can customize the manifest, icons, caching strategy, or service worker behavior inside `vite.config.ts`. Refer to the plugin documentation for advanced options such as custom Workbox routes or runtime caching.
+
+## Tailwind CSS 4
+
+- Tailwind v4 is wired through the official Vite plugin (`@tailwindcss/vite`) following the steps in the Tailwind docs for Vite integrations, so there’s no standalone config file to maintain.[^tailwind-vite]
+- Global styles import Tailwind directly via `@import 'tailwindcss';` inside `src/index.css`, making every utility available immediately.
+- Update the UI by editing `src/App.tsx` and using utility classes; the example counter screen demonstrates gradients, blur, and responsive typography out of the box.
+
+[^tailwind-vite]: https://tailwindcss.com/docs/installation/using-vite
