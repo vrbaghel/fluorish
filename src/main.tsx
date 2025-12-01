@@ -6,6 +6,10 @@ import App from './App.tsx'
 import { AppProvider } from './context/AppProvider.tsx'
 import './index.css'
 import DashboardView from './routes/DashboardView.tsx'
+import MyPlants from './routes/MyPlants.tsx'
+import MyProfile from './routes/MyProfile.tsx'
+import MyTasks from './routes/MyTasks.tsx'
+import NewPlant from './routes/NewPlant.tsx'
 import Onboarding from './routes/Onboarding.tsx'
 
 registerSW({
@@ -26,6 +30,38 @@ const router = createBrowserRouter([
     element: (
       <AppProvider>
         <DashboardView />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/my-plants',
+    element: (
+      <AppProvider>
+        <MyPlants />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/new-plant',
+    element: (
+      <AppProvider>
+        <NewPlant />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/my-tasks',
+    element: (
+      <AppProvider>
+        <MyTasks />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/my-profile',
+    element: (
+      <AppProvider>
+        <MyProfile />
       </AppProvider>
     ),
   },

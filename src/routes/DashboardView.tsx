@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAppContext } from '../hooks/useAppContext'
+import AppLayout from '../components/AppLayout'
 
 export default function DashboardView() {
   const { status, isLoggedIn, user, error, refreshUser, logout } = useAppContext()
@@ -12,7 +13,8 @@ export default function DashboardView() {
   };
 
   return (
-    <main className="min-h-svh bg-background text-foreground">
+    <AppLayout>
+      <div className="min-h-svh bg-background text-foreground">
       <section className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden">
         <div className="space-y-3 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
@@ -137,7 +139,8 @@ export default function DashboardView() {
           Switch to mobile view to proceed
         </p>
       </section>
-    </main>
+    </div>
+    </AppLayout>
   )
 }
 
