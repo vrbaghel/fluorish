@@ -24,8 +24,7 @@ export function getCurrentDayOfWeek(): DayOfWeek {
 
 export function calculateProgress(
   plantedDate: string,
-  totalWeeks: number,
-  currentStage: string
+  totalWeeks: number
 ): number {
   const planted = new Date(plantedDate)
   const now = new Date()
@@ -34,6 +33,41 @@ export function calculateProgress(
   const totalDays = totalWeeks * 7
   const progress = Math.min(Math.max((diffDays / totalDays) * 100, 0), 100)
   return Math.round(progress)
+}
+
+export function calculateProgressWithTasks(
+  plantedDate: string,
+  totalWeeks: number,
+  careRoutine: PlantCareRoutine | undefined
+): number {
+  if (!careRoutine) {
+    return calculateProgress(plantedDate, totalWeeks)
+  }
+
+  // Calculate time-based progress (50% weight)
+  const timeProgress = calculateProgress(plantedDate, totalWeeks)
+
+  // Calculate task completion progress (50% weight)
+  let totalTasks = 0
+  let completedTasks = 0
+
+  careRoutine.weeks.forEach((week) => {
+    week.days.forEach((day) => {
+      day.tasks.forEach((task) => {
+        totalTasks++
+        if (task.completed) {
+          completedTasks++
+        }
+      })
+    })
+  })
+
+  const taskProgress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0
+
+  // Combine both: 50% time-based, 50% task completion
+  const combinedProgress = (timeProgress * 0.5) + (taskProgress * 0.5)
+
+  return Math.round(Math.min(Math.max(combinedProgress, 0), 100))
 }
 
 export function generateCareRoutine(
@@ -136,7 +170,7 @@ export function generateCareRoutine(
   return { weeks, totalWeeks }
 }
 
-export function getStageFromProgress(progress: number, totalWeeks: number): string {
+export function getStageFromProgress(progress: number): string {
   if (progress < 10) return 'Planting'
   if (progress < 20) return 'Germination'
   if (progress < 50) return 'Vegetative'

@@ -7,7 +7,7 @@ import type { Plant, PlantWeek, PlantDay, PlantTask } from '../types/plant'
 import {
   getCurrentWeek,
   getCurrentDayOfWeek,
-  calculateProgress,
+  calculateProgressWithTasks,
   getStageFromProgress,
   generateCareRoutine,
 } from '../utils/plantHelpers'
@@ -50,9 +50,13 @@ export default function PlantDetails() {
 
     if (!plantData.progress || !plantData.currentStage) {
       const totalWeeks = plantData.careRoutine.totalWeeks
-      const progress = calculateProgress(plantData.plantedDate!, totalWeeks, '')
+      const progress = calculateProgressWithTasks(
+        plantData.plantedDate!,
+        totalWeeks,
+        plantData.careRoutine
+      )
       plantData.progress = progress
-      plantData.currentStage = getStageFromProgress(progress, totalWeeks) as Plant['currentStage']
+      plantData.currentStage = getStageFromProgress(progress) as Plant['currentStage']
     }
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -101,7 +105,7 @@ export default function PlantDetails() {
   }
 
   const toggleTask = (weekNumber: number, day: string, taskId: string) => {
-    if (!plant || !plant.careRoutine) return
+    if (!plant || !plant.careRoutine || !plant.plantedDate) return
 
     const updatedRoutine = { ...plant.careRoutine }
     const week = updatedRoutine.weeks.find((w) => w.weekNumber === weekNumber)
@@ -115,16 +119,32 @@ export default function PlantDetails() {
       task.completed = !task.completed
     }
 
+    // Recalculate progress based on task completion
+    const totalWeeks = updatedRoutine.totalWeeks
+    const newProgress = calculateProgressWithTasks(
+      plant.plantedDate,
+      totalWeeks,
+      updatedRoutine
+    )
+    const newStage = getStageFromProgress(newProgress) as Plant['currentStage']
+
+    const updatedPlant: Plant = {
+      ...plant,
+      careRoutine: updatedRoutine,
+      progress: newProgress,
+      currentStage: newStage,
+    }
+
     // Update localStorage
     const storedPlants = JSON.parse(
       localStorage.getItem('fluorish:plants') || '[]'
     ) as Plant[]
     const updatedPlants = storedPlants.map((p) =>
-      p.id === plant.id ? { ...plant, careRoutine: updatedRoutine } : p
+      p.id === plant.id ? updatedPlant : p
     )
     localStorage.setItem('fluorish:plants', JSON.stringify(updatedPlants))
 
-    setPlant({ ...plant, careRoutine: updatedRoutine })
+    setPlant(updatedPlant)
   }
 
   if (!isLoggedIn) {
@@ -147,11 +167,11 @@ export default function PlantDetails() {
 
   return (
     <AppLayout>
-      <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 pb-32 lg:hidden">
+      <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 pb-32 lg:hidden relative">
         {/* Back button */}
         <button
           onClick={() => navigate('/my-plants')}
-          className="self-start text-sm font-semibold text-muted hover:text-foreground transition-colors"
+          className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors"
         >
           ← Back
         </button>
@@ -281,7 +301,6 @@ function WeekAccordion({
             <DayAccordion
               key={day.day}
               day={day}
-              weekNumber={week.weekNumber}
               isExpanded={expandedDays.has(`${week.weekNumber}-${day.day}`)}
               onToggleDay={() => onToggleDay(day.day)}
               onToggleTask={(taskId) => onToggleTask(day.day, taskId)}
@@ -295,13 +314,11 @@ function WeekAccordion({
 
 function DayAccordion({
   day,
-  weekNumber,
   isExpanded,
   onToggleDay,
   onToggleTask,
 }: {
   day: PlantDay
-  weekNumber: number
   isExpanded: boolean
   onToggleDay: () => void
   onToggleTask: (taskId: string) => void

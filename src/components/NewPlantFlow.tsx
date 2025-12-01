@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Plant, PlantPreferences } from '../types/plant'
 import { mockPlants } from '../mocks/mockPlants'
-import { generateCareRoutine, calculateProgress, getStageFromProgress } from '../utils/plantHelpers'
+import { generateCareRoutine, calculateProgressWithTasks, getStageFromProgress } from '../utils/plantHelpers'
 
 type Step = 1 | 2 | 3
 
@@ -59,8 +59,8 @@ export default function NewPlantFlow() {
     const plantedDate = new Date().toISOString()
     const totalWeeks = parseInt(selectedPlant.timeToFirstHarvest.match(/\d+/)?.[0] || '8')
     const careRoutine = generateCareRoutine(selectedPlant, totalWeeks)
-    const progress = calculateProgress(plantedDate, totalWeeks, '')
-    const currentStage = getStageFromProgress(progress, totalWeeks)
+    const progress = calculateProgressWithTasks(plantedDate, totalWeeks, careRoutine)
+    const currentStage = getStageFromProgress(progress)
 
     const initializedPlant: Plant = {
       ...selectedPlant,

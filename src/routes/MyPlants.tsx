@@ -4,7 +4,7 @@ import { useAppContext } from '../hooks/useAppContext'
 import AppLayout from '../components/AppLayout'
 import CircularProgress from '../components/CircularProgress'
 import type { Plant } from '../types/plant'
-import { getCurrentWeek, calculateProgress, getStageFromProgress, generateCareRoutine } from '../utils/plantHelpers'
+import { getCurrentWeek, calculateProgressWithTasks, getStageFromProgress, generateCareRoutine } from '../utils/plantHelpers'
 
 export default function MyPlants() {
   const { isLoggedIn } = useAppContext()
@@ -32,9 +32,13 @@ export default function MyPlants() {
 
       if (!updatedPlant.progress || !updatedPlant.currentStage) {
         const totalWeeks = updatedPlant.careRoutine.totalWeeks
-        const progress = calculateProgress(updatedPlant.plantedDate!, totalWeeks, '')
+        const progress = calculateProgressWithTasks(
+          updatedPlant.plantedDate!,
+          totalWeeks,
+          updatedPlant.careRoutine
+        )
         updatedPlant.progress = progress
-        updatedPlant.currentStage = getStageFromProgress(progress, totalWeeks) as Plant['currentStage']
+        updatedPlant.currentStage = getStageFromProgress(progress) as Plant['currentStage']
       }
 
       return updatedPlant
