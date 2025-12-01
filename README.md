@@ -30,4 +30,10 @@ You can customize the manifest, icons, caching strategy, or service worker behav
 - Global styles import Tailwind directly via `@import 'tailwindcss';` inside `src/index.css`, making every utility available immediately.
 - Update the UI by editing `src/App.tsx` and using utility classes; the example counter screen demonstrates gradients, blur, and responsive typography out of the box.
 
+## App state & mock data
+
+- This is a frontend-only build that simulates logged-in state via `AppProvider` (`src/context/AppProvider.tsx`). It fetches the mock profile using `setTimeout` to mimic a network trip, then exposes the result through a global context.
+- Access the state anywhere with the `useAppContext` hook. It surfaces `status`, `user`, `error`, `refreshUser()`, and `logout()` so screens can stay responsive even without a backend.
+- Mock data lives under `src/mocks/`, making it easy to swap in different fixtures or later replace them with real API calls.
+
 [^tailwind-vite]: https://tailwindcss.com/docs/installation/using-vite
