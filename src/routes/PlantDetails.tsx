@@ -3,7 +3,9 @@ import { useParams, Navigate, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../hooks/useAppContext'
 import AppLayout from '../components/AppLayout'
 import CircularProgress from '../components/CircularProgress'
+import PlantDoctor from '../components/PlantDoctor'
 import type { Plant, PlantWeek, PlantDay, PlantTask } from '../types/plant'
+import type { CareOption } from '../types/diagnosis'
 import {
   getCurrentWeek,
   getCurrentDayOfWeek,
@@ -19,6 +21,7 @@ export default function PlantDetails() {
   const [plant, setPlant] = useState<Plant | null>(null)
   const [expandedWeeks, setExpandedWeeks] = useState<Set<number>>(new Set())
   const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set())
+  const [showPlantDoctor, setShowPlantDoctor] = useState(false)
 
   useEffect(() => {
     if (!isLoggedIn || !id) return
@@ -147,6 +150,69 @@ export default function PlantDetails() {
     setPlant(updatedPlant)
   }
 
+  const handleUpdateCareRoutine = (careOptions: CareOption[]) => {
+    if (!plant || !plant.careRoutine) return
+
+    // Add care options as new tasks to the care routine
+    const updatedRoutine = { ...plant.careRoutine }
+    const currentWeek = plant.plantedDate
+      ? getCurrentWeek(plant.plantedDate, plant.careRoutine.totalWeeks)
+      : 1
+
+    // Add care options to current and next few weeks
+    careOptions.forEach((option, index) => {
+      const targetWeek = Math.min(currentWeek + index, updatedRoutine.totalWeeks)
+      const week = updatedRoutine.weeks.find((w) => w.weekNumber === targetWeek)
+      if (week) {
+        // Add to Monday of the target week
+        const monday = week.days.find((d) => d.day === 'Monday')
+        if (monday) {
+          monday.tasks.push({
+            id: `care-${option.id}-${targetWeek}`,
+            title: option.title,
+            completed: false,
+          })
+        }
+      }
+    })
+
+    // Extend care routine if needed (add 1-2 more weeks for recovery)
+    const additionalWeeks = Math.ceil(careOptions.length / 2)
+    if (updatedRoutine.totalWeeks < currentWeek + additionalWeeks) {
+      const newTotalWeeks = currentWeek + additionalWeeks
+      // Generate additional weeks
+      for (let week = updatedRoutine.totalWeeks + 1; week <= newTotalWeeks; week++) {
+        updatedRoutine.weeks.push({
+          weekNumber: week,
+          days: [
+            { day: 'Monday', tasks: [] },
+            { day: 'Tuesday', tasks: [] },
+            { day: 'Wednesday', tasks: [] },
+            { day: 'Thursday', tasks: [] },
+            { day: 'Friday', tasks: [] },
+            { day: 'Saturday', tasks: [] },
+            { day: 'Sunday', tasks: [] },
+          ],
+        })
+      }
+      updatedRoutine.totalWeeks = newTotalWeeks
+    }
+
+    const updatedPlant: Plant = {
+      ...plant,
+      careRoutine: updatedRoutine,
+    }
+
+    // Update localStorage
+    const storedPlants = JSON.parse(
+      localStorage.getItem('fluorish:plants') || '[]'
+    ) as Plant[]
+    const updatedPlants = storedPlants.map((p) => (p.id === plant.id ? updatedPlant : p))
+    localStorage.setItem('fluorish:plants', JSON.stringify(updatedPlants))
+
+    setPlant(updatedPlant)
+  }
+
   if (!isLoggedIn) {
     return <Navigate to="/" replace />
   }
@@ -161,6 +227,18 @@ export default function PlantDetails() {
     )
   }
 
+  if (showPlantDoctor) {
+    return (
+      <AppLayout>
+        <PlantDoctor
+          plant={plant}
+          onClose={() => setShowPlantDoctor(false)}
+          onUpdateCareRoutine={handleUpdateCareRoutine}
+        />
+      </AppLayout>
+    )
+  }
+
   const currentWeek = plant.plantedDate
     ? getCurrentWeek(plant.plantedDate, plant.careRoutine?.totalWeeks || 8)
     : 1
@@ -171,9 +249,17 @@ export default function PlantDetails() {
         {/* Back button */}
         <button
           onClick={() => navigate('/my-plants')}
-          className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors"
+          className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors z-10"
         >
           ← Back
+        </button>
+
+        {/* Check Health button */}
+        <button
+          onClick={() => setShowPlantDoctor(true)}
+          className="fixed bottom-30 right-6 btn-primary text-base px-4 py-2 z-10 drop-shadow-sm drop-shadow-white/30"
+        >
+          Check Health
         </button>
 
         {/* Progress and Stage */}
