@@ -34,8 +34,20 @@ export default function NewPlantFlow() {
         setRecommendedPlants(mockPlants)
         setIsLoading(false)
         setStep(3)
-      }, 2000)
+      }, 3000)
     }
+  }
+
+  const handleBack = () => {
+    if (step === 1) {
+      navigate('/dashboard')
+    } else if (step === 2) {
+      setStep(1)
+    }
+  }
+
+  const handleClose = () => {
+    navigate('/dashboard')
   }
 
   const handleSelectPlant = () => {
@@ -53,8 +65,13 @@ export default function NewPlantFlow() {
     navigate('/my-plants')
   }
 
+  // Show loading step if loading
+  if (isLoading) {
+    return <LoadingStep />
+  }
+
   if (step === 1) {
-    return <GuidanceStep onNext={handleNext} />
+    return <GuidanceStep onNext={handleNext} onBack={handleBack} />
   }
 
   if (step === 2) {
@@ -63,12 +80,9 @@ export default function NewPlantFlow() {
         preferences={preferences}
         onPreferencesChange={setPreferences}
         onNext={handleNext}
+        onBack={handleBack}
       />
     )
-  }
-
-  if (isLoading) {
-    return <LoadingStep />
   }
 
   if (step === 3) {
@@ -78,6 +92,7 @@ export default function NewPlantFlow() {
         selectedIndex={selectedPlantIndex}
         onIndexChange={setSelectedPlantIndex}
         onSelect={handleSelectPlant}
+        onClose={handleClose}
       />
     )
   }
@@ -85,9 +100,15 @@ export default function NewPlantFlow() {
   return null
 }
 
-function GuidanceStep({ onNext }: { onNext: () => void }) {
+function GuidanceStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden">
+    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 relative lg:hidden">
+      <button
+        onClick={onBack}
+        className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors"
+      >
+        ← Back
+      </button>
       <div className="space-y-3 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
           NEW PLANT
@@ -140,7 +161,7 @@ function GuidanceStep({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      <button className="btn-primary w-full" onClick={onNext}>
+      <button className="btn-primary w-3/4 mx-auto fixed bottom-30 left-0 right-0" onClick={onNext}>
         Get started
       </button>
     </div>
@@ -151,10 +172,12 @@ function PreferencesStep({
   preferences,
   onPreferencesChange,
   onNext,
+  onBack,
 }: {
   preferences: PlantPreferences
   onPreferencesChange: (prefs: PlantPreferences) => void
   onNext: () => void
+  onBack: () => void
 }) {
   const questions = [
     {
@@ -190,6 +213,15 @@ function PreferencesStep({
   const currentQuestion = currentQuestionIndex >= 0 ? questions[currentQuestionIndex] : null
   const allAnswered = Object.values(preferences).every((value) => value !== null)
 
+  // Find the last answered question index for back navigation
+  let lastAnsweredIndex = -1
+  for (let i = questions.length - 1; i >= 0; i--) {
+    if (preferences[questions[i].key] !== null) {
+      lastAnsweredIndex = i
+      break
+    }
+  }
+
   const handleSelect = (key: keyof PlantPreferences, value: string) => {
     onPreferencesChange({
       ...preferences,
@@ -197,16 +229,36 @@ function PreferencesStep({
     })
   }
 
+  const handleBack = () => {
+    if (currentQuestionIndex === 0) {
+      // First question - go back to step 1
+      onBack()
+    } else if (lastAnsweredIndex >= 0) {
+      // Go back to previous question by clearing the last answered one
+      const previousQuestionKey = questions[lastAnsweredIndex].key
+      onPreferencesChange({
+        ...preferences,
+        [previousQuestionKey]: null,
+      })
+    }
+  }
+
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden">
+    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden relative">
+      <button
+        onClick={handleBack}
+        className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors"
+      >
+        ← Back
+      </button>
       <div className="space-y-3 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary mb-10">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
           STEP 2 OF 3
         </p>
         <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
           {currentQuestion?.question || 'All set!'}
         </h1>
-        <p className="text-base text-muted sm:text-lg">
+        <p className={`text-base text-muted sm:text-lg mt-5 ${currentQuestionIndex === -1 ? 'hidden' : ''}`}>
           {currentQuestionIndex + 1} of {questions.length} questions
         </p>
       </div>
@@ -233,7 +285,7 @@ function PreferencesStep({
       )}
 
       {allAnswered && (
-        <button className="btn-primary w-full" onClick={onNext}>
+        <button className="btn-primary w-3/4 fixed bottom-30 left-0 right-0 mx-auto" onClick={onNext}>
           Get recommendations
         </button>
       )}
@@ -243,17 +295,19 @@ function PreferencesStep({
 
 function LoadingStep() {
   return (
-    <div className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-6 px-6 py-16 lg:hidden">
+    <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-start gap-6 px-6 py-16 lg:hidden">
       <div className="space-y-4 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
           FINDING YOUR PLANTS
         </p>
         <h2 className="text-2xl font-semibold">We&apos;re matching you with perfect plants</h2>
-        <p className="text-sm text-muted">
-          Analyzing your preferences and space conditions…
-        </p>
-        <div className="mt-8 h-1.5 w-40 overflow-hidden rounded-full bg-white/10">
-          <span className="block h-full w-1/3 animate-pulse bg-primary" />
+        <div className="flex flex-col items-center justify-center h-[40vh]">
+            <p className="text-sm text-muted">
+            Analyzing your preferences and space conditions…
+            </p>
+            <div className="mt-8 h-1.5 w-40 overflow-hidden rounded-full bg-white/10 mx-auto">
+            <span className="block h-full w-1/3 animate-pulse bg-primary" />
+            </div>
         </div>
       </div>
     </div>
@@ -265,11 +319,13 @@ function PlantSelectionStep({
   selectedIndex,
   onIndexChange,
   onSelect,
+  onClose,
 }: {
   plants: Plant[]
   selectedIndex: number
   onIndexChange: (index: number) => void
   onSelect: () => void
+  onClose: () => void
 }) {
   const currentPlant = plants[selectedIndex]
   const [touchStart, setTouchStart] = useState(0)
@@ -303,17 +359,26 @@ function PlantSelectionStep({
   }
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 pb-32 lg:hidden">
-      <div className="space-y-3 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-          STEP 3 OF 3
-        </p>
-        <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
-          Recommended plants
-        </h1>
-        <p className="text-base text-muted sm:text-lg">
-          Swipe to browse and select your plant
-        </p>
+    <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 pb-32 lg:hidden relative">
+    <button
+        onClick={onClose}
+        className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors text-right"
+    >
+        Close
+    </button>
+      <div className="flex flex-col items-center justify-between">
+        <div className="w-16" /> {/* Spacer for centering */}
+        <div className="space-y-3 text-center flex-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
+            STEP 3 OF 3
+          </p>
+          <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+            Recommended plants
+          </h1>
+          <p className="text-base text-muted sm:text-lg">
+            Swipe to browse and select your plant
+          </p>
+        </div>
       </div>
 
       {/* Carousel */}
@@ -373,7 +438,7 @@ function PlantSelectionStep({
       </div>
 
       {/* Plant details */}
-      <div className="rounded-2xl border border-white/8 bg-surface-elevated/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm">
+      <div className="h-[22vh] overflow-y-auto rounded-2xl border border-white/8 bg-surface-elevated/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm">
         <div className="space-y-4">
           <div>
             <h2 className="text-2xl font-semibold text-foreground">{currentPlant.name}</h2>
@@ -418,7 +483,7 @@ function PlantSelectionStep({
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-20 left-0 right-0 z-40 mx-auto max-w-2xl px-6 lg:hidden">
+      <div className="fixed bottom-30 left-0 right-0 z-40 mx-auto max-w-2xl px-6 lg:hidden">
         <button className="btn-primary w-full" onClick={onSelect}>
           Plant {currentPlant.name}
         </button>
