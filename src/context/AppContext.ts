@@ -7,6 +7,7 @@ export type AppContextValue = {
   status: AppStatus
   user: MockUser | null
   error: string | null
+  isLoggedIn: boolean
   refreshUser: () => void
   logout: () => void
 }
