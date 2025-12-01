@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Plant, PlantPreferences } from '../types/plant'
 import { mockPlants } from '../mocks/mockPlants'
+import { generateCareRoutine, calculateProgress, getStageFromProgress } from '../utils/plantHelpers'
 
 type Step = 1 | 2 | 3
 
@@ -54,11 +55,26 @@ export default function NewPlantFlow() {
     const selectedPlant = recommendedPlants[selectedPlantIndex]
     if (!selectedPlant) return
 
+    // Initialize plant with care routine and progress
+    const plantedDate = new Date().toISOString()
+    const totalWeeks = parseInt(selectedPlant.timeToFirstHarvest.match(/\d+/)?.[0] || '8')
+    const careRoutine = generateCareRoutine(selectedPlant, totalWeeks)
+    const progress = calculateProgress(plantedDate, totalWeeks, '')
+    const currentStage = getStageFromProgress(progress, totalWeeks)
+
+    const initializedPlant: Plant = {
+      ...selectedPlant,
+      plantedDate,
+      careRoutine,
+      progress,
+      currentStage: currentStage as Plant['currentStage'],
+    }
+
     // Save to localStorage
     const existingPlants = JSON.parse(
       localStorage.getItem('fluorish:plants') || '[]'
     ) as Plant[]
-    const updatedPlants = [...existingPlants, selectedPlant]
+    const updatedPlants = [...existingPlants, initializedPlant]
     localStorage.setItem('fluorish:plants', JSON.stringify(updatedPlants))
 
     // Navigate to My Plants page

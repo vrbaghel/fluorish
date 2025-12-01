@@ -11,6 +11,7 @@ import MyProfile from './routes/MyProfile.tsx'
 import MyTasks from './routes/MyTasks.tsx'
 import NewPlant from './routes/NewPlant.tsx'
 import Onboarding from './routes/Onboarding.tsx'
+import PlantDetails from './routes/PlantDetails.tsx'
 
 registerSW({
   immediate: true,
@@ -70,6 +71,14 @@ const router = createBrowserRouter([
     element: (
       <AppProvider>
         <Onboarding />
+      </AppProvider>
+    ),
+  },
+  {
+    path: '/plant/:id',
+    element: (
+      <AppProvider>
+        <PlantDetails />
       </AppProvider>
     ),
   },

@@ -16,6 +16,31 @@ export type PlantPreferences = {
   budget: BudgetRange | null
 }
 
+export type PlantStage = 'Planting' | 'Germination' | 'Vegetative' | 'Flowering' | 'Fruiting' | 'Harvesting' | 'Dormant'
+
+export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
+
+export type PlantTask = {
+  id: string
+  title: string
+  completed: boolean
+}
+
+export type PlantDay = {
+  day: DayOfWeek
+  tasks: PlantTask[]
+}
+
+export type PlantWeek = {
+  weekNumber: number
+  days: PlantDay[]
+}
+
+export type PlantCareRoutine = {
+  weeks: PlantWeek[]
+  totalWeeks: number
+}
+
 export type Plant = {
   id: string
   name: string
@@ -29,5 +54,10 @@ export type Plant = {
   timeToFirstHarvest: string // e.g., "4-6 weeks"
   description: string
   price: number
+  // Extended fields for user's plants
+  plantedDate?: string // ISO date string
+  currentStage?: PlantStage
+  progress?: number // percentage 0-100
+  careRoutine?: PlantCareRoutine
 }
 
