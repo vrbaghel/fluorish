@@ -173,7 +173,7 @@ function GuidanceStep({
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden relative">
       <button
         onClick={onClose}
-        className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors"
+        className="btn-secondary fixed top-4 left-4 z-10"
       >
         Close
       </button>
@@ -277,7 +277,7 @@ function PhotoCaptureStep({
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden relative">
       <button
         onClick={onClose}
-        className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors z-10"
+        className="btn-secondary fixed top-4 left-4 z-10"
       >
         Close
       </button>
@@ -376,7 +376,7 @@ function DiagnosisResultsStep({
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 pb-32 lg:hidden relative">
       <button
         onClick={onClose}
-        className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors"
+        className="btn-secondary fixed top-4 left-4 z-10"
       >
         Close
       </button>

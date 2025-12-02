@@ -271,7 +271,7 @@ export default function PlantDetails() {
         {/* Back button */}
         <button
           onClick={() => navigate('/my-plants')}
-          className="fixed top-4 left-4 self-start text-sm font-semibold text-muted hover:text-foreground transition-colors z-10"
+          className="btn-secondary fixed top-4 left-4 z-10"
         >
           ← Back
         </button>
