@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import type { Plant } from '../types/plant'
 import type { DiagnosisResult, CareOption } from '../types/diagnosis'
 import { generateMockDiagnosis } from '../mocks/mockDiagnosis'
+import { CameraIcon, UploadIcon } from '../assets/icons'
 
 type Step = 1 | 2 | 3 | 4
 
@@ -231,10 +232,10 @@ function GuidanceStep({
 
       <div className="flex flex-col gap-4">
         <button className="btn-primary w-3/4 mx-auto" onClick={onStartCamera}>
-          📷 Click Photo
+          <CameraIcon className="w-4 h-4 mr-2" /> <span className="text-sm">Click Photo</span>
         </button>
         <button className="btn-secondary w-3/4 mx-auto" onClick={onUpload}>
-          📁 Upload Photo
+          <UploadIcon className="w-4 h-4 mr-2" /> <span className="text-sm">Upload Photo</span>
         </button>
       </div>
 

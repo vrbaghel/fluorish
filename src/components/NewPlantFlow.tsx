@@ -274,9 +274,16 @@ function PreferencesStep({
         <h1 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
           {currentQuestion?.question || 'All set!'}
         </h1>
-        <p className={`text-base text-muted sm:text-lg mt-5 ${currentQuestionIndex === -1 ? 'hidden' : ''}`}>
-          {currentQuestionIndex + 1} of {questions.length} questions
-        </p>
+        {!allAnswered && (
+          <p className="text-base text-muted sm:text-lg mt-5">
+            {currentQuestionIndex + 1} of {questions.length} questions
+          </p>
+        )}
+        {allAnswered && (
+          <p className="text-base text-muted sm:text-lg mt-2">
+            Ready to find your perfect plant match
+          </p>
+        )}
       </div>
 
       {currentQuestion && (
@@ -301,9 +308,60 @@ function PreferencesStep({
       )}
 
       {allAnswered && (
-        <button className="btn-primary w-3/4 fixed bottom-30 left-0 right-0 mx-auto" onClick={onNext}>
-          Get recommendations
-        </button>
+        <>
+          <div className="rounded-2xl border border-white/8 bg-surface-elevated/80 p-6 shadow-2xl shadow-black/40 backdrop-blur-sm">
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="text-5xl mb-4">✨</div>
+                <p className="text-base text-muted">
+                  Great! We have all the information we need to find your perfect plant match.
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-4 border-t border-white/10">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary mt-0.5">
+                    1
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">We&apos;ll analyze your preferences</p>
+                    <p className="text-xs text-muted mt-1">
+                      Matching your answers with plants that fit your space, lifestyle, and care level.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary mt-0.5">
+                    2
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Browse recommended plants</p>
+                    <p className="text-xs text-muted mt-1">
+                      Swipe through personalized plant recommendations with detailed information.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary mt-0.5">
+                    3
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">Start your plant journey</p>
+                    <p className="text-xs text-muted mt-1">
+                      Select a plant and we&apos;ll create a personalized care routine just for you.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button className="btn-primary w-3/4 fixed bottom-30 left-0 right-0 mx-auto" onClick={onNext}>
+            Get recommendations
+          </button>
+        </>
       )}
     </div>
   )
