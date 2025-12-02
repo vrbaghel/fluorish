@@ -15,7 +15,6 @@ export default defineConfig({
         'apple-touch-icon.png',
         'pwa-192x192.png',
         'pwa-512x512.png',
-        'pwa-maskable-512x512.png',
       ],
       devOptions: {
         enabled: true,
@@ -39,12 +38,6 @@ export default defineConfig({
             src: 'pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-          },
-          {
-            src: 'pwa-maskable-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
           },
           {
             src: 'apple-touch-icon.png',
