@@ -188,16 +188,16 @@ function FatalErrorScreen({
 function LogoMark({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
   const dimensions =
     size === 'lg'
-      ? 'h-20 w-20 text-2xl'
+      ? 'h-24 w-24'
       : size === 'sm'
-        ? 'h-10 w-10 text-lg'
-        : 'h-14 w-14 text-xl'
+        ? 'h-10 w-10'
+        : 'h-14 w-14'
 
   return (
     <div
       className={`mx-auto flex items-center justify-center rounded-2xl bg-linear-to-br from-primary to-emerald-500 font-semibold text-background ${dimensions}`}
     >
-      F
+      <img src="/pwa-512x512.png" alt="Fluorish" className="w-full h-full object-contain" />
     </div>
   )
 }
