@@ -257,7 +257,7 @@ export default function PlantDetails() {
         {/* Check Health button */}
         <button
           onClick={() => setShowPlantDoctor(true)}
-          className="fixed bottom-30 right-6 btn-primary text-base px-4 py-2 z-10 drop-shadow-sm drop-shadow-white/30"
+          className="fixed bottom-30 right-6 btn-primary text-sm px-4 py-2 z-10 drop-shadow-sm drop-shadow-white/30"
         >
           Check Health
         </button>

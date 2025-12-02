@@ -15,7 +15,6 @@ export default function PlantDoctor({ plant, onClose, onUpdateCareRoutine }: Pla
   const [step, setStep] = useState<Step>(1)
   const [capturedImage, setCapturedImage] = useState<string | null>(null)
   const [imageSource, setImageSource] = useState<'camera' | 'upload' | null>(null)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [diagnosis, setDiagnosis] = useState<DiagnosisResult | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -84,14 +83,12 @@ export default function PlantDoctor({ plant, onClose, onUpdateCareRoutine }: Pla
   const handleContinue = () => {
     if (!capturedImage) return
 
-    setIsAnalyzing(true)
     setStep(3)
 
     // Simulate analysis (3-5 seconds)
     setTimeout(() => {
       const mockDiagnosis = generateMockDiagnosis(plant, capturedImage)
       setDiagnosis(mockDiagnosis)
-      setIsAnalyzing(false)
       setStep(4)
     }, 3000 + Math.random() * 2000)
   }
@@ -113,7 +110,15 @@ export default function PlantDoctor({ plant, onClose, onUpdateCareRoutine }: Pla
   }
 
   if (step === 1) {
-    return <GuidanceStep onStartCamera={handleStartCamera} onUpload={handleUploadClick} onClose={handleClose} />
+    return (
+      <GuidanceStep
+        onStartCamera={handleStartCamera}
+        onUpload={handleUploadClick}
+        onClose={handleClose}
+        fileInputRef={fileInputRef as React.RefObject<HTMLInputElement>}
+        onFileSelect={handleFileSelect}
+      />
+    )
   }
 
   if (step === 2) {
@@ -154,10 +159,14 @@ function GuidanceStep({
   onStartCamera,
   onUpload,
   onClose,
+  fileInputRef,
+  onFileSelect,
 }: {
   onStartCamera: () => void
   onUpload: () => void
   onClose: () => void
+  fileInputRef: React.RefObject<HTMLInputElement>
+  onFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void
 }) {
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16 lg:hidden relative">
@@ -165,10 +174,10 @@ function GuidanceStep({
         onClick={onClose}
         className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors"
       >
-        ← Close
+        Close
       </button>
 
-      <div className="space-y-3 text-center mt-8">
+      <div className="space-y-3 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
           PLANT DOCTOR
         </p>
@@ -220,14 +229,22 @@ function GuidanceStep({
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <button className="btn-primary w-full" onClick={onStartCamera}>
+      <div className="flex flex-col gap-4">
+        <button className="btn-primary w-3/4 mx-auto" onClick={onStartCamera}>
           📷 Click Photo
         </button>
-        <button className="btn-secondary w-full" onClick={onUpload}>
+        <button className="btn-secondary w-3/4 mx-auto" onClick={onUpload}>
           📁 Upload Photo
         </button>
       </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={onFileSelect}
+        className="hidden"
+      />
     </div>
   )
 }
@@ -261,7 +278,7 @@ function PhotoCaptureStep({
         onClick={onClose}
         className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors z-10"
       >
-        ← Close
+        Close
       </button>
 
       <div className="space-y-3 text-center">
@@ -301,19 +318,19 @@ function PhotoCaptureStep({
       <div className="flex flex-col gap-3">
         {capturedImage ? (
           <>
-            <button className="btn-primary w-full" onClick={onContinue}>
+            <button className="btn-primary w-3/4 mx-auto" onClick={onContinue}>
               Continue to analysis
             </button>
-            <button className="btn-secondary w-full" onClick={onRetake}>
+            <button className="btn-secondary w-3/4 mx-auto" onClick={onRetake}>
               {imageSource === 'camera' ? 'Retake Photo' : 'Reupload Photo'}
             </button>
           </>
         ) : imageSource === 'camera' ? (
-          <button className="btn-primary w-full" onClick={onCapture}>
+          <button className="btn-primary w-3/4 mx-auto" onClick={onCapture}>
             Capture Photo
           </button>
         ) : (
-          <button className="btn-primary w-full" onClick={onUpload}>
+          <button className="btn-primary w-3/4 mx-auto" onClick={onUpload}>
             Select Photo
           </button>
         )}
@@ -330,11 +347,13 @@ function AnalysisStep() {
           ANALYZING
         </p>
         <h2 className="text-2xl font-semibold">Analyzing your plant&apos;s health</h2>
-        <p className="text-sm text-muted">
-          Examining leaves, stems, and overall plant condition…
-        </p>
+        <div className="flex flex-col items-center justify-center h-[60vh]">
+            <p className="text-sm text-muted">
+                Examining leaves, stems, and overall plant condition…
+            </p>
         <div className="mt-8 h-1.5 w-40 overflow-hidden rounded-full bg-white/10 mx-auto">
           <span className="block h-full w-1/3 animate-pulse bg-primary" />
+        </div>
         </div>
       </div>
     </div>
@@ -358,7 +377,7 @@ function DiagnosisResultsStep({
         onClick={onClose}
         className="fixed top-4 left-4 text-sm font-semibold text-muted hover:text-foreground transition-colors"
       >
-        ← Close
+        Close
       </button>
 
       <div className="space-y-3 text-center">
@@ -429,7 +448,7 @@ function DiagnosisResultsStep({
         </div>
       )}
 
-      <div className="fixed bottom-20 left-0 right-0 z-40 mx-auto max-w-2xl px-6 lg:hidden">
+      <div className="fixed bottom-30 left-0 right-0 z-40 w-3/4 mx-auto max-w-2xl px-6 lg:hidden">
         {isHealthy ? (
           <button className="btn-primary w-full" onClick={onClose}>
             Back to Plant Details
