@@ -22,6 +22,7 @@ export default function DashboardView() {
       localStorage.getItem('fluorish:plants') || '[]'
     ) as Plant[]
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlants(storedPlants)
 
     // Calculate today's tasks count
