@@ -13,6 +13,7 @@ import {
   getStageFromProgress,
   generateCareRoutine,
 } from '../utils/plantHelpers'
+import { updateStreak } from '../utils/streakHelpers'
 
 export default function PlantDetails() {
   const { id } = useParams<{ id: string }>()
@@ -118,9 +119,11 @@ export default function PlantDetails() {
     if (!dayData) return
 
     const task = dayData.tasks.find((t) => t.id === taskId)
-    if (task) {
-      task.completed = !task.completed
-    }
+    if (!task) return
+
+    const wasCompleted = task.completed
+    task.completed = !task.completed
+    const isNowCompleted = task.completed
 
     // Recalculate progress based on task completion
     const totalWeeks = updatedRoutine.totalWeeks
@@ -146,6 +149,25 @@ export default function PlantDetails() {
       p.id === plant.id ? updatedPlant : p
     )
     localStorage.setItem('fluorish:plants', JSON.stringify(updatedPlants))
+
+    // Check if all tasks for today are completed across all plants (only if task was just completed)
+    if (isNowCompleted && !wasCompleted) {
+      const currentDay = getCurrentDayOfWeek()
+      const allPlantsDone = updatedPlants.every((p) => {
+        if (!p.careRoutine || !p.plantedDate) return true
+        const pCurrentWeek = getCurrentWeek(p.plantedDate, p.careRoutine.totalWeeks)
+        const pWeek = p.careRoutine.weeks.find((w) => w.weekNumber === pCurrentWeek)
+        if (!pWeek) return true
+        const pDay = pWeek.days.find((d) => d.day === currentDay)
+        if (!pDay || pDay.tasks.length === 0) return true
+        return pDay.tasks.every((t) => t.completed)
+      })
+
+      // If all tasks for today are completed, update streak
+      if (allPlantsDone) {
+        updateStreak()
+      }
+    }
 
     setPlant(updatedPlant)
   }

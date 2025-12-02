@@ -45,7 +45,13 @@ export default function CircularProgress({
       </svg>
       {/* Percentage text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl font-semibold text-foreground">{progress}%</span>
+        <span
+          className={`font-semibold text-foreground ${
+            size <= 60 ? 'text-xs' : size <= 100 ? 'text-sm' : 'text-2xl'
+          }`}
+        >
+          {progress}%
+        </span>
       </div>
     </div>
   )

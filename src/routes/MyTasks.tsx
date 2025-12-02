@@ -4,6 +4,7 @@ import { useAppContext } from '../hooks/useAppContext'
 import AppLayout from '../components/AppLayout'
 import type { Plant, PlantTask } from '../types/plant'
 import { getCurrentWeek, getCurrentDayOfWeek, calculateProgressWithTasks, getStageFromProgress } from '../utils/plantHelpers'
+import { updateStreak } from '../utils/streakHelpers'
 
 type PlantTasks = {
   plant: Plant
@@ -76,9 +77,11 @@ export default function MyTasks() {
     if (!day) return
 
     const task = day.tasks.find((t) => t.id === taskId)
-    if (task) {
-      task.completed = !task.completed
-    }
+    if (!task) return
+
+    const wasCompleted = task.completed
+    task.completed = !task.completed
+    const isNowCompleted = task.completed
 
     // Recalculate progress
     const totalWeeks = plant.careRoutine.totalWeeks
@@ -100,8 +103,27 @@ export default function MyTasks() {
     const updatedPlants = storedPlants.map((p) => (p.id === plantId ? updatedPlant : p))
     localStorage.setItem('fluorish:plants', JSON.stringify(updatedPlants))
 
-    // Update local state - remove plant if all tasks are complete
+    // Check if all tasks for today are completed across all plants (only if task was just completed)
     const incompleteTasks = day.tasks.filter((t) => !t.completed)
+    if (incompleteTasks.length === 0 && isNowCompleted && !wasCompleted) {
+      // All tasks for this plant are complete, check if all plants are done
+      const allPlantsDone = updatedPlants.every((p) => {
+        if (!p.careRoutine || !p.plantedDate) return true
+        const pCurrentWeek = getCurrentWeek(p.plantedDate, p.careRoutine.totalWeeks)
+        const pWeek = p.careRoutine.weeks.find((w) => w.weekNumber === pCurrentWeek)
+        if (!pWeek) return true
+        const pDay = pWeek.days.find((d) => d.day === currentDay)
+        if (!pDay || pDay.tasks.length === 0) return true
+        return pDay.tasks.every((t) => t.completed)
+      })
+
+      // If all tasks for today are completed, update streak
+      if (allPlantsDone) {
+        updateStreak()
+      }
+    }
+
+    // Update local state - remove plant if all tasks are complete
     if (incompleteTasks.length === 0) {
       setPlantTasks((prev) => prev.filter((pt) => pt.plant.id !== plantId))
     } else {
