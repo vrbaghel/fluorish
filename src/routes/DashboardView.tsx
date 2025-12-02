@@ -92,7 +92,7 @@ export default function DashboardView() {
           {/* Header */}
           <div className="space-y-3 text-center">
                 <p className="text-xs font-semibold uppercase tracking-[0.35em] text-primary">
-                  FLUORISH
+                  FLOURISH
                 </p>
                 <h1 className="mt-2 text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
                   Welcome back{user ? `, ${user.name.split(' ')[0]}` : ''}!
@@ -253,7 +253,7 @@ export default function DashboardView() {
               Desktop blocked
             </p>
             <h2 className="mt-4 text-3xl font-semibold text-white">
-              FLUORISH only runs as a PWA on mobile screens
+              FLOURISH only runs as a PWA on mobile screens
             </h2>
             <p className="mt-3 text-base text-red-200">
               Install the app as a Progressive Web App on your phone or shrink the viewport to

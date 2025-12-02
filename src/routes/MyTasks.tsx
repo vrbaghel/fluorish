@@ -247,7 +247,7 @@ export default function MyTasks() {
             Desktop blocked
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-white">
-            FLUORISH only runs as a PWA on mobile screens
+            FLOURISH only runs as a PWA on mobile screens
           </h2>
         </div>
       </section>

@@ -76,14 +76,14 @@ function LoginScreen({
         <div className="space-y-4 text-center">
           <LogoMark size="lg" />
           <p className="text-xs font-semibold uppercase tracking-[0.5em] text-primary">
-            FLUORISH
+            FLOURISH
           </p>
           <h1 className="text-3xl font-semibold leading-tight text-foreground">
             Sign in to continue growing
           </h1>
           <p className="text-sm text-muted">
-            Choose a mock provider below. We&apos;ll save your garden plan to
-            local storage and send you to the dashboard.
+            Sign in with your preferred account to access your personalized
+            garden dashboard.
           </p>
         </div>
 
@@ -112,7 +112,7 @@ function LoginScreen({
         </div>
 
         <p className="text-center text-xs text-muted">
-          Mock auth only — nothing is sent over the network.
+          By signing in, you agree to our terms of service and privacy policy.
         </p>
       </div>
     </main>
@@ -125,7 +125,7 @@ function SplashScreen() {
       <div className="mx-auto flex min-h-svh max-w-sm flex-col items-center justify-center px-6 text-center">
         <LogoMark size="lg" />
         <p className="mt-6 text-xs font-semibold uppercase tracking-[0.55em] text-primary">
-          FLUORISH
+          FLOURISH
         </p>
         <p className="mt-3 text-sm text-muted">Preparing your city-growing hub…</p>
       </div>
@@ -141,7 +141,7 @@ function AuthLoadingScreen({ provider }: { provider: string | null }) {
       <div className="mx-auto flex min-h-svh max-w-sm flex-col items-center justify-center px-6 text-center">
         <LogoMark />
         <p className="mt-6 text-xs font-semibold uppercase tracking-[0.55em] text-primary">
-          FLUORISH
+          FLOURISH
         </p>
         <h2 className="mt-4 text-2xl font-semibold">
           Connecting with {providerLabel}
@@ -170,7 +170,7 @@ function FatalErrorScreen({
         <LogoMark />
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.45em] text-red-400">
-            FLUORISH
+            FLOURISH
           </p>
           <h2 className="text-2xl font-semibold text-white">We hit a snag</h2>
           <p className="text-sm text-muted">
@@ -195,9 +195,9 @@ function LogoMark({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
 
   return (
     <div
-      className={`mx-auto flex items-center justify-center rounded-2xl bg-linear-to-br from-primary to-emerald-500 font-semibold text-background ${dimensions}`}
+      className={`mx-auto flex items-center justify-center rounded-2xl font-semibold text-background ${dimensions}`}
     >
-      <img src="/pwa-512x512.png" alt="Fluorish" className="w-full h-full object-contain" />
+      <img src="/pwa-512x512.png" alt="FLOURISH" className="w-full h-full object-contain" />
     </div>
   )
 }

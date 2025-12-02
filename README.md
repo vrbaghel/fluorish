@@ -1,4 +1,4 @@
-# Fluorish PWA Starter
+# Flourish PWA Starter
 
 A React + TypeScript + Vite project that ships with an opinionated progressive web app setup out of the box. Service workers are registered automatically in every environment so the app works offline by default and updates itself when new builds are deployed.
 
@@ -34,7 +34,7 @@ You can customize the manifest, icons, caching strategy, or service worker behav
 
 - This is a frontend-only build that simulates logged-in state via `AppProvider` (`src/context/AppProvider.tsx`). It fetches the mock profile using `setTimeout` to mimic a network trip, then exposes the result through a global context.
 - Access the state anywhere with the `useAppContext` hook. It surfaces `status`, `user`, `error`, `refreshUser()`, and `logout()` so screens can stay responsive even without a backend.
-- Logged-in state persists in `localStorage` (key `fluorish:isLoggedIn`) so app reloads remember whether the mock user is signed in. Future profile data can be appended to the same storage strategy.
+- Logged-in state persists in `localStorage` (key `Flourish:isLoggedIn`) so app reloads remember whether the mock user is signed in. Future profile data can be appended to the same storage strategy.
 - Mock data lives under `src/mocks/`, making it easy to swap in different fixtures or later replace them with real API calls.
 
 [^tailwind-vite]: https://tailwindcss.com/docs/installation/using-vite

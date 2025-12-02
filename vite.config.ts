@@ -20,9 +20,9 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: 'Fluorish',
-        short_name: 'Fluorish',
-        description: 'React + Vite progressive web app starter for Fluorish',
+        name: 'Flourish',
+        short_name: 'Flourish',
+        description: 'React + Vite progressive web app starter for Flourish',
         theme_color: '#0f172a',
         background_color: '#ffffff',
         display: 'standalone',

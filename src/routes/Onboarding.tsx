@@ -55,7 +55,7 @@ export default function Onboarding() {
       <main className="min-h-svh bg-background text-foreground">
         <div className="mx-auto flex min-h-svh max-w-sm flex-col items-center justify-center px-6 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.55em] text-primary">
-            FLUORISH
+            FLOURISH
           </p>
           <h2 className="mt-4 text-2xl font-semibold">We&apos;re setting up your preferences</h2>
           <p className="mt-2 text-sm text-muted">
@@ -71,10 +71,10 @@ export default function Onboarding() {
 
   return (
     <main className="min-h-svh bg-background text-foreground">
-      <div className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-center gap-8 px-6 py-12">
+      <div className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-start gap-8 px-6 py-16 relative">
         <div className="space-y-3 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.5em] text-primary">
-            FLUORISH
+            FLOURISH
           </p>
           <h1 className="text-3xl font-semibold leading-tight text-foreground">
             Let&apos;s get to know your space
@@ -84,7 +84,7 @@ export default function Onboarding() {
           </p>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <form className="space-y-8" onSubmit={handleSubmit}>
           <div className="space-y-2 text-left">
             <label className="block text-xs font-semibold uppercase tracking-[0.3em] text-muted">
               Location
@@ -163,13 +163,14 @@ export default function Onboarding() {
               We&apos;ll size containers and plant counts to your available floor or railing space.
             </p>
           </div>
-
+          <div className='w-3/4 mx-auto mt-10 fixed bottom-25 left-0 right-0'>
           <button
             type="submit"
-            className="btn-primary mt-4 w-3/4 mx-auto"
-          >
+            className="btn-primary w-full"
+            >
             Continue to dashboard
           </button>
+            </div>
         </form>
       </div>
     </main>
