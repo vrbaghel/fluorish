@@ -166,7 +166,7 @@ export default function Onboarding() {
 
           <button
             type="submit"
-            className="btn-primary mt-4 w-full"
+            className="btn-primary mt-4 w-3/4 mx-auto"
           >
             Continue to dashboard
           </button>

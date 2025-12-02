@@ -177,7 +177,7 @@ function GuidanceStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
         </div>
       </div>
 
-      <button className="btn-primary w-3/4 mx-auto fixed bottom-30 left-0 right-0" onClick={onNext}>
+      <button className="btn-primary w-3/4 mx-auto fixed bottom-25 left-0 right-0" onClick={onNext}>
         Get started
       </button>
     </div>
@@ -358,7 +358,7 @@ function PreferencesStep({
             </div>
           </div>
 
-          <button className="btn-primary w-3/4 fixed bottom-30 left-0 right-0 mx-auto" onClick={onNext}>
+          <button className="btn-primary w-3/4 fixed bottom-25 left-0 right-0 mx-auto" onClick={onNext}>
             Get recommendations
           </button>
         </>
@@ -557,7 +557,7 @@ function PlantSelectionStep({
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-30 left-0 right-0 z-40 mx-auto w-3/4 max-w-2xl px-6 lg:hidden">
+      <div className="fixed bottom-25 left-0 right-0 z-40 mx-auto w-3/4 max-w-2xl px-6 lg:hidden">
         <button className="btn-primary w-full" onClick={onSelect}>
           Plant {currentPlant.name}
         </button>

@@ -449,7 +449,7 @@ function DiagnosisResultsStep({
         </div>
       )}
 
-      <div className="fixed bottom-30 left-0 right-0 z-40 w-3/4 mx-auto max-w-2xl px-6 lg:hidden">
+      <div className="fixed bottom-25 left-0 right-0 z-40 w-3/4 mx-auto max-w-2xl px-6 lg:hidden">
         {isHealthy ? (
           <button className="btn-primary w-full" onClick={onClose}>
             Back to Plant Details
