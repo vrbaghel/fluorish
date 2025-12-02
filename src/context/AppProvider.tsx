@@ -178,7 +178,7 @@ export function AppProvider({ children }: Props) {
   const completeOnboarding = useCallback((data: OnboardingInput) => {
     const profile: MockUser = {
       id: 'user-001',
-      name: 'Asha Patel',
+      name: 'Jane Doe',
       avatar:
         'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=80',
       homeZone: `${data.location} · Garden space (${data.spaceAreaSqFt} sq ft, ${data.spaceHeightFt} ft height)`,
