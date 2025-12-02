@@ -438,7 +438,7 @@ function PlantSelectionStep({
         {selectedIndex > 0 && (
           <button
             onClick={() => onIndexChange(selectedIndex - 1)}
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm"
+            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 py-2 px-3 text-white backdrop-blur-sm"
           >
             ←
           </button>
@@ -446,7 +446,7 @@ function PlantSelectionStep({
         {selectedIndex < plants.length - 1 && (
           <button
             onClick={() => onIndexChange(selectedIndex + 1)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur-sm"
+            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 py-2 px-3 text-white backdrop-blur-sm"
           >
             →
           </button>
@@ -499,7 +499,7 @@ function PlantSelectionStep({
       </div>
 
       {/* Fixed bottom button */}
-      <div className="fixed bottom-30 left-0 right-0 z-40 mx-auto max-w-2xl px-6 lg:hidden">
+      <div className="fixed bottom-30 left-0 right-0 z-40 mx-auto w-3/4 max-w-2xl px-6 lg:hidden">
         <button className="btn-primary w-full" onClick={onSelect}>
           Plant {currentPlant.name}
         </button>

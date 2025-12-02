@@ -4,7 +4,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-001',
     name: 'Basil',
-    image: 'https://images.unsplash.com/photo-1618375569909-2c87849c4c04?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/basil.jpg',
     style: 'Fresh herbs',
     size: 'Small',
     maintenance: 'Low to moderate',
@@ -18,7 +18,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-002',
     name: 'Tomato',
-    image: 'https://images.unsplash.com/photo-1546094097-9c1443b53c4b?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/tomato.jpg',
     style: 'Edible',
     size: 'Medium',
     maintenance: 'Moderate',
@@ -32,7 +32,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-003',
     name: 'Lavender',
-    image: 'https://images.unsplash.com/photo-1512237798647-3e6981a47dd8?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/lavender.jpg',
     style: 'Fragrance',
     size: 'Small',
     maintenance: 'Low to moderate',
@@ -46,7 +46,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-004',
     name: 'Snake Plant',
-    image: 'https://images.unsplash.com/photo-1593691509540-4b7b36b0e0e1?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/snake-plant.jpg',
     style: 'Aesthetic',
     size: 'Medium',
     maintenance: 'Very low',
@@ -60,7 +60,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-005',
     name: 'Mint',
-    image: 'https://images.unsplash.com/photo-1618375569909-2c87849c4c04?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/mint.jpg',
     style: 'Fresh herbs',
     size: 'Small',
     maintenance: 'Low to moderate',
@@ -74,7 +74,7 @@ export const mockPlants: Plant[] = [
   {
     id: 'plant-006',
     name: 'Pepper',
-    image: 'https://images.unsplash.com/photo-1604977046802-80e5b0c0e0e0?auto=format&fit=crop&w=400&q=80',
+    image: '/assets/images/plants/pepper.jpg',
     style: 'Edible',
     size: 'Medium',
     maintenance: 'Moderate',

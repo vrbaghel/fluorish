@@ -1,17 +1,19 @@
 import { Link, useLocation } from 'react-router-dom'
+import { DashboardIcon, NewPlantIcon, MyPlantsIcon, MyTasksIcon, MyProfileIcon } from '../assets/icons'
+import type { JSX } from 'react/jsx-runtime'
 
 type NavItem = {
   path: string
   label: string
-  icon: string
+  icon: JSX.Element
 }
 
 const navItems: NavItem[] = [
-  { path: '/dashboard', label: 'Dashboard', icon: '🏠' },
-  { path: '/my-plants', label: 'My Plants', icon: '🌱' },
-  { path: '/new-plant', label: 'New Plant', icon: '➕' },
-  { path: '/my-tasks', label: 'My Tasks', icon: '✅' },
-  { path: '/my-profile', label: 'My Profile', icon: '👤' },
+  { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
+  { path: '/my-plants', label: 'My Plants', icon: <MyPlantsIcon /> },
+  { path: '/new-plant', label: 'New Plant', icon: <NewPlantIcon /> },
+  { path: '/my-tasks', label: 'My Tasks', icon: <MyTasksIcon /> },
+  { path: '/my-profile', label: 'My Profile', icon: <MyProfileIcon /> },
 ]
 
 export default function BottomNavbar() {
@@ -32,8 +34,8 @@ export default function BottomNavbar() {
                   : 'text-muted hover:text-foreground'
               }`}
             >
-              <span className="text-xl">{item.icon}</span>
-              <span className="text-[0.65rem] font-medium uppercase tracking-[0.05em]">
+              <span className="w-7 h-7">{item.icon}</span>
+              <span className="text-[0.65rem] font-medium tracking-[0.05em]">
                 {item.label}
               </span>
             </Link>
